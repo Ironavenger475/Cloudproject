@@ -1,12 +1,10 @@
 const express = require('express');
 const sql = require('mssql'); // For Azure SQL integration
 require('dotenv').config(); // For environment variables
+const path = require('path'); // Add path module for handling file paths
 
 const app = express();
 const port = process.env.PORT || 3000;
-
-// Middleware to serve static files
-app.use(express.static('public'));
 
 // Azure SQL Database configuration
 const dbConfig = {
@@ -19,6 +17,11 @@ const dbConfig = {
     enableArithAbort: true,
   },
 };
+
+// Route to serve index.html from the root folder
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'index.html')); // Serve from root folder
+});
 
 // Endpoint to fetch data for display
 app.get('/data', async (req, res) => {
@@ -37,9 +40,9 @@ app.get('/data', async (req, res) => {
   }
 });
 
-// Serve display.html
+// Serve display.html from the root folder
 app.get('/display', (req, res) => {
-  res.sendFile(__dirname + '/public/display.html');
+  res.sendFile(path.join(__dirname, 'display.html')); // Serve from root folder
 });
 
 // Start the server
