@@ -44,10 +44,10 @@
 </head>
 <body>
     <div id="data-display">
-        <!-- The data will be displayed here -->
+        <!-- The user data will be displayed here -->
     </div>
     <script>
-        // Parse query string
+        // Parse query string to get the username and email
         const params = new URLSearchParams(window.location.search);
         const username = params.get('username');
         const email = params.get('email');
@@ -59,7 +59,11 @@
             <p><strong>Email:</strong> ${email || 'N/A'}</p>
         `;
     </script>
-    <a href = "https://finalproject-dataload.azurewebsites.net/"> <button> Add Data </button> </a>
+
+    <a href="https://finalproject-dataload.azurewebsites.net/">
+        <button>Add Data</button>
+    </a>
+
     <h2>Find Energy Consumption of Household</h2>
     <form id="search-form">
         <label for="home-id">Please enter your Home ID:</label>
@@ -87,7 +91,7 @@
             const homeId = document.getElementById('home-id').value;
 
             try {
-                // Fetch data from the backend using the /data endpoint
+                // Make a GET request to fetch data based on the home_id
                 const response = await fetch(`/data?home_id=${homeId}`);
                 const data = await response.json();
 
