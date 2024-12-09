@@ -32,7 +32,7 @@ app.get('/data', async (req, res) => {
     const pool = await sql.connect(dbConfig);
     const homeId = req.query.home_id; // Retrieve home_id from query parameters
 const result = await pool.request()
-      .input('homeId', sql.NVarChar, homeId) // Define the 'homeId' parameter
+      .input('homeId', sql.INT, homeId) // Define the 'homeId' parameter
       .query(`
         SELECT home_id, appliance, energy_consumption_kWh, usage_duration_minutes
         FROM EnergyUsage
@@ -41,7 +41,7 @@ const result = await pool.request()
       `);
     res.json(result.recordset);
   } catch (error) {
-    console.error('Error fetching data:', error);
+    console.error('Error fetching data:', error.message);
     res.status(500).send('Error fetching data');
   }
 });
