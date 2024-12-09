@@ -30,11 +30,15 @@ app.get('/', (req, res) => {
 app.get('/data', async (req, res) => {
   try {
     const pool = await sql.connect(dbConfig);
-    const result = await pool.request().query(`
-      SELECT home_id, appliance, energy_consumption_kWh, usage_duration_minutes
-      FROM EnergyUsage
-      ORDER BY home_id, energy_consumption_kWh DESC
-    `);
+    const homeId = req.query.home_id; // Retrieve home_id from query parameters
+const result = await pool.request()
+      .input('homeId', sql.NVarChar, homeId) // Define the 'homeId' parameter
+      .query(`
+        SELECT home_id, appliance, energy_consumption_kWh, usage_duration_minutes
+        FROM EnergyUsage
+        WHERE home_id = @homeId
+        ORDER BY energy_consumption_kWh DESC
+      `);
     res.json(result.recordset);
   } catch (error) {
     console.error('Error fetching data:', error);
