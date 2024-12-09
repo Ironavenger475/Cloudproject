@@ -32,7 +32,7 @@ app.get('/data', async (req, res) => {
     const pool = await sql.connect(dbConfig);
     const result = await pool.request().query(`
       SELECT home_id, appliance, energy_consumption_kWh, usage_duration_minutes
-      FROM EnergyData
+      FROM EnergyUsage
       ORDER BY home_id, energy_consumption_kWh DESC
     `);
     res.json(result.recordset);
